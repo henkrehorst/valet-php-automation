@@ -1,2 +1,64 @@
 framework:
-    workflows: null
+    workflows:
+        update_process:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Update
+            initial_marking: start
+            places:
+                - start
+                - build
+                - failed
+                - update_bottle_hash
+                - pull_request
+                - rejected
+                - published
+            transitions:
+                to_build:
+                    from: start
+                    to:   build
+                fail:
+                    from: build
+                    to: failed
+                to_update_bottle_hash:
+                    from: build
+                    to: update_bottle_hash
+                to_pull_request:
+                    from: update_bottle_hash
+                    to: pull_request
+                publish:
+                    from: pull_request
+                    to:   published
+                reject:
+                    from: pull_request
+                    to:   rejected
+        platform_update_process:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\PlatformUpdate
+            initial_marking: start
+            places:
+                - start
+                - build
+                - finished
+                - failed
+            transitions:
+                to_build:
+                    from: start
+                    to:   build
+                finish:
+                    from: build
+                    to:   finished
+                fail:
+                    from: build
+                    to:   failed
