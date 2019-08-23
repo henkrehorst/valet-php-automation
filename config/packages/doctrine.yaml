@@ -4,6 +4,8 @@ doctrine:
         driver: 'pdo_mysql'
         server_version: '5.7'
         charset: utf8mb4
+        types:
+            uuid:  Ramsey\Uuid\Doctrine\UuidType
         default_table_options:
             charset: utf8mb4
             collate: utf8mb4_unicode_ci

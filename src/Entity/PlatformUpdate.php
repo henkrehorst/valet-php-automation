@@ -12,9 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 class PlatformUpdate
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var \Ramsey\Uuid\UuidInterface
+     *
+     * @ORM\Id
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     private $id;
 
@@ -38,7 +41,7 @@ class PlatformUpdate
      */
     private $Platform;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
