@@ -36,7 +36,7 @@ class PhpVersion
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $status;
+    private $status = "supported";
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Update", mappedBy="phpVersion", orphanRemoval=true)

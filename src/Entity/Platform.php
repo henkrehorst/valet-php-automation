@@ -31,7 +31,7 @@ class Platform
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $ciCd;
+    private $ciCd = "travis";
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -41,7 +41,7 @@ class Platform
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $status;
+    private $status = "supported";
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\PlatformUpdate", mappedBy="Platform")
