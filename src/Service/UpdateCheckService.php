@@ -43,6 +43,7 @@ class UpdateCheckService
                 //push version update to update array
                 $updateArray["updates"][$phpVersion->getMinorVersion()]["releaseVersion"] = $newReleaseVersion;
                 $updateArray["updates"][$phpVersion->getMinorVersion()]["packageHash"] = $this->phpNetService->getPackageHash($newReleaseVersion);
+                $updateArray["updates"][$phpVersion->getMinorVersion()]["phpVersion"] = $phpVersion;
 
                 if ($io) $io->warning("PHP " . $phpVersion->getMinorVersion() . " has a new release version");
             }
