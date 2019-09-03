@@ -8,10 +8,7 @@ use App\Entity\Platform;
 use App\Modules\Github\Service\GithubService;
 use App\Repository\PhpVersionRepository;
 use App\Repository\PlatformRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
@@ -41,6 +38,9 @@ class SetupService
 
     public function setup(SymfonyStyle $io = null)
     {
+        //display title on console
+        if($io) $io->title("Setup process");
+
         //check if php versions model no data exists
         if (empty($this->phpVersionRepository->findAll())) {
             //setup php version data, first get all php packages from github
@@ -64,14 +64,10 @@ class SetupService
             $this->entityManager->flush();
 
             //display success message on command line
-            if ($io) {
-                $io->success("php version data successfully created");
-            }
+            if ($io) $io->success("php version data successfully created");
         } else {
             //display warning data already available
-            if ($io) {
-                $io->warning("php version data is already available!");
-            }
+            if ($io) $io->success("php version data is already available!");
         }
 
         //check if platform model no data exists
@@ -100,14 +96,10 @@ class SetupService
 
 
             //display success message on command line
-            if ($io) {
-                $io->success("platform data successfully created");
-            }
+            if ($io) $io->success("platform data successfully created");
         } else {
             //display warning data already available
-            if ($io) {
-                $io->warning("platform data is already available!");
-            }
+            if ($io) $io->success("platform data is already available!");
         }
     }
 }
