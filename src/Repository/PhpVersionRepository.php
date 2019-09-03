@@ -47,4 +47,18 @@ class PhpVersionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @return PhpVersion[]
+     */
+    public function getSupportedOrEolPhpVersions()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.status = :eol OR p.status = :supported')
+            ->setParameter('eol',"EOL")
+            ->setParameter('supported',"supported")
+            ->orderBy("p.minorVersion")
+            ->getQuery()
+            ->getResult();
+    }
 }

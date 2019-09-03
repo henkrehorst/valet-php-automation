@@ -32,7 +32,7 @@ class PhpNetService
      * @param string $minorVersion
      * @return string
      */
-    public function getLatestPackageHash(string $releaseVersion)
+    public function getPackageHash(string $releaseVersion)
     {
         return $this->phpNetHandler->getVersionByNumber($releaseVersion)->getPackageHash()->getTarXZ();
     }
