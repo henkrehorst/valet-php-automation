@@ -19,18 +19,22 @@ class PhpNetService
         $this->phpNetHandler = $phpNetHandler;
     }
 
-    public function getPhpVersionInfo(array $phpVersions)
+    /**
+     * @param string $minorVersion
+     * @return string
+     */
+    public function getLatestReleaseVersion(string $minorVersion)
     {
-
+        return $this->phpNetHandler->getVersionByNumber($minorVersion)->getLatestVersion();
     }
 
-    public function getSinglePhpVersionInfo($version)
+    /**
+     * @param string $minorVersion
+     * @return string
+     */
+    public function getLatestPackageHash(string $minorVersion)
     {
-
+        return $this->phpNetHandler->getVersionByNumber($minorVersion)->getPackageHash()->getTarXZ();
     }
 
-    public function getLatestPhpVersion()
-    {
-
-    }
 }

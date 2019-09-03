@@ -5,6 +5,7 @@ namespace App\Modules\PhpNet\Handler;
 
 
 use App\Modules\PhpNet\Endpoint\PhpNetEndpoint;
+use App\Modules\PhpNet\Interpreter\SingleVersionInterpreter;
 
 /**
  * Class PhpNetHandler
@@ -25,7 +26,7 @@ class PhpNetHandler
 
     /**
      * @param $version
-     * @return mixed
+     * @return SingleVersionInterpreter
      */
     public function getVersionByNumber($version)
     {
@@ -34,19 +35,6 @@ class PhpNetHandler
             "version" => $version
         ]);
 
-        return $this->phpNetEndpoint->doRequest();
+        return new SingleVersionInterpreter((array)json_encode($this->phpNetEndpoint->doRequest(), true));
     }
-
-    /**
-     * @return mixed
-     */
-    public function getVersionInformation()
-    {
-        $this->phpNetEndpoint->setQueryParams([
-            "json" => "json"
-        ]);
-
-        return $this->phpNetEndpoint->doRequest();
-    }
-
 }
