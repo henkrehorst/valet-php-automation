@@ -32,6 +32,9 @@ class CurlClient implements ClientInterface
     {
         $ch = curl_init($endpoint->getUrl());
 
+        //follow redirects
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
         curl_setopt($ch,CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

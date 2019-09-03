@@ -35,6 +35,6 @@ class PhpNetHandler
             "version" => $version
         ]);
 
-        return new SingleVersionInterpreter((array)json_encode($this->phpNetEndpoint->doRequest(), true));
+        return new SingleVersionInterpreter((array)json_decode($this->phpNetEndpoint->doRequest(), true));
     }
 }
