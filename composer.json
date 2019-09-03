@@ -30,7 +30,8 @@
     "symfony/workflow": "4.3.*",
     "symfony/yaml": "4.3.*",
     "knplabs/github-api": "~2.11.0",
-    "php-http/guzzle6-adapter": "^1.1"
+    "php-http/guzzle6-adapter": "^1.1",
+    "ext-json": "*"
   },
   "require-dev": {
     "symfony/debug-pack": "*",
