@@ -49,6 +49,6 @@ class UpdateCheckService
             }
         }
 
-        dd($updateArray);
+        return $updateArray;
     }
 }

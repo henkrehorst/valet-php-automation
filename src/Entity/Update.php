@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Every update for the brew tap is stored here
  *
  * @ORM\Entity(repositoryClass="App\Repository\UpdateRepository")
+ * @ORM\Table(name="php_updates")
  */
 class Update
 {
@@ -37,17 +38,17 @@ class Update
     /**
      * @ORM\Column(type="integer")
      */
-    private $rebuildVersion;
+    private $rebuildVersion = 0;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $type;
+    private $type = "releaseUpdate";
 
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $status;
+    private $status = "start";
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PhpVersion", inversedBy="updates")
