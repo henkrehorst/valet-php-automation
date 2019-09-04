@@ -39,7 +39,6 @@ class UpdateCreateService
         //save all updates to database
         $this->entityManager->flush();
 
-        dd($updates);
         return $updates;
     }
 }

@@ -38,9 +38,8 @@ class UpdateService
         if ($updateInformation["alreadyUpToDate"] === false) {
             //create updates
             $updates = $this->updateCreateService->createUpdates($updateInformation);
-
             //start build for updates
-            $this->buildService->startBuild($updates);
+            $this->buildService->startBuild($updates, $io);
 
         } else {
             //return success message no updates available

@@ -32,7 +32,7 @@ class GithubHandler
 
     }
 
-    public function getBranchRef($branch)
+    public function getOrCreateBranchRef($branch)
     {
         $branchExist = false;
         $branchRef = "refs/heads/" . $branch;
@@ -48,7 +48,7 @@ class GithubHandler
             return $branch;
         } else {
 
-            $referenceMaster = $this->gitHub->client()->api('gitData')->references()->show($this->globalCredentials->getUsername(), $this->globalCredentials->getRepo(), 'heads/master');
+            $referenceMaster = $this->gitHub->client()->api('gitData')->references()->show($this->globalCredentials->getUsername(), $this->globalCredentials->getRepo(), 'heads/' . self::DEFAULT_BRANCH);
             $referenceData = ['ref' => $branchRef, 'sha' => $referenceMaster['object']['sha']];
 
             $this->gitHub->client()->api('gitData')->references()->create($this->globalCredentials->getUsername(), $this->globalCredentials->getRepo(), $referenceData);
@@ -56,7 +56,6 @@ class GithubHandler
             return $branch;
         }
     }
-
 
     public function getFilesInFolder($folder = self::PACKAGES_FOLDER, $branch = self::DEFAULT_BRANCH)
     {
@@ -72,9 +71,7 @@ class GithubHandler
         $committer = $this->gitHub->committer();
 
         if (empty($sha)) {
-            $oldFile = $this->getFileContent($filename);
-        } else {
-            $oldFile['sha'] = $sha;
+            $sha = $this->getFileContent($filename, $branch)->getSha();
         }
 
         return $this->gitHub->client()->api('repo')->contents()
@@ -83,7 +80,7 @@ class GithubHandler
                 self::PACKAGES_FOLDER . '/' . $filename,
                 $content,
                 $message,
-                $oldFile['sha'],
+                $sha,
                 $branch,
                 $committer);
     }
