@@ -48,6 +48,11 @@ class Platform
      */
     private $platformUpdates;
 
+    /**
+     * @ORM\Column(type="string", length=22)
+     */
+    private $os = "osx";
+
     public function __construct()
     {
         $this->platformUpdates = new ArrayCollection();
@@ -133,6 +138,18 @@ class Platform
                 $platformUpdate->setPlatform(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOs(): ?string
+    {
+        return $this->os;
+    }
+
+    public function setOs(string $os): self
+    {
+        $this->os = $os;
 
         return $this;
     }

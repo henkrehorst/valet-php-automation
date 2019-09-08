@@ -46,9 +46,9 @@ class Update
     private $type = "releaseUpdate";
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="array")
      */
-    private $status = "start";
+    private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PhpVersion", inversedBy="updates")
@@ -129,12 +129,12 @@ class Update
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?array
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(array $status): self
     {
         $this->status = $status;
 

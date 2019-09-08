@@ -47,4 +47,15 @@ class PlatformRepository extends ServiceEntityRepository
         ;
     }
     */
+    /**
+     * @return Platform[]
+     */
+    public function getSupportedPlatforms()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.status = :status')
+            ->setParameter('status','supported')
+            ->getQuery()
+            ->getResult();
+    }
 }

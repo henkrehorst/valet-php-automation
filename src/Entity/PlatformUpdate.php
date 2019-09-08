@@ -27,7 +27,7 @@ class PlatformUpdate
     private $bottleHash;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="array")
      */
     private $status;
 
@@ -58,12 +58,12 @@ class PlatformUpdate
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?array
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(array $status): self
     {
         $this->status = $status;
 
@@ -71,7 +71,7 @@ class PlatformUpdate
     }
 
     /**
-     * @return mixed
+     * @return Update
      */
     public function getParentUpdate()
     {
