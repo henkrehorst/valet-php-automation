@@ -39,7 +39,8 @@ class TravisService
                 $platformUpdate->getPlatform()->getImageName(),
                 [
                     "PHPV={$platformUpdate->getParentUpdate()->getPhpVersion()->getMinorVersion()}",
-                    "OS={$platformUpdate->getPlatform()->getName()}"
+                    "OS={$platformUpdate->getPlatform()->getName()}",
+                    "UPDATE_ID={$platformUpdate->getId()}"
                 ]);
         }
 
