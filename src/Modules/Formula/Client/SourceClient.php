@@ -20,7 +20,7 @@ class SourceClient
 
     public function updatePhpReleaseVersion($version)
     {
-        $this->content = preg_replace('/(?<=php.net\/get\/php-)(.*)(?=.tar.xz\/from\/this\/mirror)/', $version, $this->content);
+        $this->content = preg_replace('/(?<=php.net\/distributions\/php-)(.*)(?=.tar.xz)/', $version, $this->content);
 
         return $this;
     }

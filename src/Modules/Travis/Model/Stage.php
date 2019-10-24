@@ -14,7 +14,9 @@ class Stage
     private $name = "";
     private $env = [];
     private $image = "";
-    private $script = "bash scripts/travisbuild";
+    private $script = [
+        "travis_wait 30 sleep 1800 &",
+        "bash scripts/travisbuild"];
 
     public function __construct($name, $env, $image)
     {
@@ -82,14 +84,14 @@ class Stage
     /**
      * @return string
      */
-    public function getScript(): string
+    public function getScript(): array
     {
         return $this->script;
     }
 
     public function toArray()
     {
-        return[
+        return [
             self::STAGE_INDEX => $this->getName(),
             self::OSX_IMAGE_INDEX => $this->getImage(),
             self::ENV_INDEX => $this->getEnv(),

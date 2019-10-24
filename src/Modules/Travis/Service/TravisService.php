@@ -47,7 +47,5 @@ class TravisService
 
         //trigger build on travis
         $response = $this->travisHandler->runBuild($this->travisHandler->getProject()->getProjectId(), $buildRequest);
-
-        dd($response);
     }
 }
