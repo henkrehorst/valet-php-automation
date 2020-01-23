@@ -84,13 +84,6 @@ class SetupService
             $plaform->setImageName('xcode10');
             $this->entityManager->persist($plaform);
 
-
-            //setup sierra platform
-            $plaform = new Platform();
-            $plaform->setName('sierra');
-            $plaform->setImageName('xcode9.2');
-            $this->entityManager->persist($plaform);
-
             //save platforms
             $this->entityManager->flush();
 
