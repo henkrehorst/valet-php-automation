@@ -13,6 +13,7 @@ class GithubHandler
     const PACKAGES_FOLDER = "Formula";
     const DEFAULT_BRANCH = "develop";
 
+
     private $gitHub;
     private $globalCredentials;
 
@@ -22,8 +23,12 @@ class GithubHandler
         $this->globalCredentials = $globalCredentials;
     }
 
-    public function getFileContent($filename, $branch = self::DEFAULT_BRANCH)
+    public function getFileContent($filename, $branch = "")
     {
+        if(empty($branch)){
+            $branch = $this->globalCredentials->getBranch();
+        }
+
         return new ContentInterpreter($this->gitHub->client()->api('repo')->contents()
             ->show($this->globalCredentials->getUsername(),
                 $this->globalCredentials->getRepo(),
@@ -48,7 +53,7 @@ class GithubHandler
             return $branch;
         } else {
 
-            $referenceMaster = $this->gitHub->client()->api('gitData')->references()->show($this->globalCredentials->getUsername(), $this->globalCredentials->getRepo(), 'heads/' . self::DEFAULT_BRANCH);
+            $referenceMaster = $this->gitHub->client()->api('gitData')->references()->show($this->globalCredentials->getUsername(), $this->globalCredentials->getRepo(), 'heads/' . $this->globalCredentials->getBranch());
             $referenceData = ['ref' => $branchRef, 'sha' => $referenceMaster['object']['sha']];
 
             $this->gitHub->client()->api('gitData')->references()->create($this->globalCredentials->getUsername(), $this->globalCredentials->getRepo(), $referenceData);
@@ -57,8 +62,12 @@ class GithubHandler
         }
     }
 
-    public function getFilesInFolder($folder = self::PACKAGES_FOLDER, $branch = self::DEFAULT_BRANCH)
+    public function getFilesInFolder($folder = self::PACKAGES_FOLDER, $branch = "")
     {
+        if(empty($branch)){
+            $branch = $this->globalCredentials->getBranch();
+        }
+
         return $this->gitHub->client()->api('repo')->contents()
             ->show($this->globalCredentials->getUsername(),
                 $this->globalCredentials->getRepo(),

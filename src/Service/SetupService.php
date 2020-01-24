@@ -53,7 +53,7 @@ class SetupService
                 $phpVersion->setCurrentReleaseVersion($version);
 
                 //set status php version lower than 7.1 end of line
-                if(substr($version, 0, 3) < 7.1){
+                if(substr($version, 0, 3) <= 7.1){
                     $phpVersion->setStatus("EOL");
                 }
 

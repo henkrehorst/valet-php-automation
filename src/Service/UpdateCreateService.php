@@ -28,7 +28,7 @@ class UpdateCreateService
             $update = new Update();
             $update->setReleaseVersion($updateInfo["releaseVersion"]);
             $update->setPackageHash($updateInfo["packageHash"]);
-            $update->setBranch("update-master/" . $updateInfo['releaseVersion'] . "@" . time());
+            $update->setBranch(getenv('UPDATE_PREFIX_BRANCH') . "/" . $updateInfo['releaseVersion'] . "@" . time());
             $update->setPhpVersion($updateInfo["phpVersion"]);
             $update->setCreatedAt(new \DateTime("now"));
 
