@@ -20,7 +20,8 @@ class ContentInterpreter
 
     public function getPhpVersionFromFile()
     {
-        preg_match('/(?<=php.net\/distributions\/php-)(.*)(?=.tar.xz)/', $this->content, $m);
+        preg_match('/(?<=php.net\/get\/php-)(.*)(?=.tar.xz)/', $this->content, $m);
+
         return $m[0];
     }
 
