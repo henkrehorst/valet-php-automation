@@ -25,8 +25,6 @@ class UpdateCheckService
     public function checkForUpdates(SymfonyStyle $io = null)
     {
         //create array with update information
-
-        //TODO: remove this line
         $updateArray["alreadyUpToDate"] = true;
 
         //display title on console

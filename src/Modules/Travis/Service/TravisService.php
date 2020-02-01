@@ -6,16 +6,19 @@ namespace App\Modules\Travis\Service;
 
 use App\Entity\PlatformUpdate;
 use App\Entity\Update;
+use App\Modules\Bintray\Client\Credentials;
 use App\Modules\Travis\Handler\TravisHandler;
 use App\Modules\Travis\Model\BuildRequest;
 
 class TravisService
 {
     private $travisHandler;
+    private $bintrayCredentials;
 
-    public function __construct(TravisHandler $travisHandler)
+    public function __construct(TravisHandler $travisHandler, Credentials $credentials)
     {
         $this->travisHandler = $travisHandler;
+        $this->bintrayCredentials = $credentials;
     }
 
     /**
@@ -40,7 +43,10 @@ class TravisService
                 [
                     "PHPV={$platformUpdate->getParentUpdate()->getPhpVersion()->getMinorVersion()}",
                     "OS={$platformUpdate->getPlatform()->getName()}",
-                    "UPDATE_ID={$platformUpdate->getId()}"
+                    "UPDATE_ID={$platformUpdate->getId()}",
+                    "PACKAGE_REPOSITORY={$this->bintrayCredentials->getPackageRepository()}",
+                    "BUILD_VERSION=",
+                    "AUTOMATION_ENDPOINT={$this->bintrayCredentials->getAutomationEndpoint()}"
                 ]);
         }
 
