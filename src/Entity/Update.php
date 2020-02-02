@@ -38,7 +38,7 @@ class Update
     /**
      * @ORM\Column(type="integer")
      */
-    private $rebuildVersion = 0;
+    private $revisionVersion = 0;
 
     /**
      * @ORM\Column(type="string", length=30)
