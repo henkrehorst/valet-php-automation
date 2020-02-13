@@ -159,5 +159,7 @@ class BuildService
         //change parent update status to build
         $workflow = $this->workFlows->get($update, 'update_process');
         $workflow->apply($update, 'to_build');
+        //save status in database
+        $this->entityManager->flush();
     }
 }
