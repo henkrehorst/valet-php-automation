@@ -70,6 +70,12 @@ class UpdateFinishService
         $parentUpdate = $platformUpdate->getParentUpdate();
         //check if all platform updates already finished
         if ($this->checkPlatformUpdates($parentUpdate)) {
+            //update status of parent update
+            $workflow = $this->workFlows->get($parentUpdate, 'update_process');
+            $workflow->apply($parentUpdate,'to_update_bottle_hash');
+            $this->entityManager->persist($parentUpdate);
+            $this->entityManager->flush();
+
             //update bottle hashes on github
             $content = $this->githubService->getFormulaContent($parentUpdate->getPhpVersion()->getMinorVersion(), $parentUpdate->getBranch());
             $content = $this->formulaService->updateBottleHashes($content, $parentUpdate);
@@ -86,6 +92,12 @@ class UpdateFinishService
             $this->githubService->createPullRequest($parentUpdate->getBranch(),
                 "valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()} update {$parentUpdate->getReleaseVersion()}",
                 "Release update for valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()}");
+
+            //update status parent update
+            $workflow = $this->workFlows->get($parentUpdate, 'update_process');
+            $workflow->apply($parentUpdate,'to_pull_request');
+            $this->entityManager->persist($parentUpdate);
+            $this->entityManager->flush();
 
             return "pull request for update published";
         } else {

@@ -141,7 +141,7 @@ class BuildService
         }
 
         //apply jobs for platform updates to ci/cd's
-        $this->travisService->triggerBuilds($buildsForTravis, $update, "test test");
+        $this->travisService->triggerBuilds($buildsForTravis, $update, "valet php update {$update->getReleaseVersion()}");
 
     }
 
