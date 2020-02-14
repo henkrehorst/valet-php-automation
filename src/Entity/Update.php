@@ -57,7 +57,7 @@ class Update
     private $phpVersion;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PlatformUpdate", mappedBy="mainUpdate")
+     * @ORM\OneToMany(targetEntity="App\Entity\PlatformUpdate", mappedBy="parentUpdate")
      */
     private $platformUpdates;
 
@@ -105,16 +105,20 @@ class Update
         return $this;
     }
 
-    public function getRebuildVersion(): ?int
+    /**
+     * @return int
+     */
+    public function getRevisionVersion(): int
     {
-        return $this->rebuildVersion;
+        return $this->revisionVersion;
     }
 
-    public function setRebuildVersion(int $rebuildVersion): self
+    /**
+     * @param int $revisionVersion
+     */
+    public function setRevisionVersion(int $revisionVersion): void
     {
-        $this->rebuildVersion = $rebuildVersion;
-
-        return $this;
+        $this->revisionVersion = $revisionVersion;
     }
 
     public function getType(): ?string

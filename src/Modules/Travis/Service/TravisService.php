@@ -45,7 +45,7 @@ class TravisService
                     "OS={$platformUpdate->getPlatform()->getName()}",
                     "UPDATE_ID={$platformUpdate->getId()}",
                     "PACKAGE_REPOSITORY={$this->bintrayCredentials->getPackageRepository()}",
-                    "BUILD_VERSION=",
+                    "BUILD_VERSION={$platformUpdate->getParentUpdate()->getReleaseVersion()}_{$platformUpdate->getParentUpdate()->getRevisionVersion()}",
                     "AUTOMATION_ENDPOINT={$this->bintrayCredentials->getAutomationEndpoint()}"
                 ]);
         }
