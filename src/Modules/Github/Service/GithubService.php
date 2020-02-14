@@ -41,4 +41,9 @@ class GithubService
         return $this->githubHandler->getOrCreateBranchRef($branch);
     }
 
+    public function createPullRequest($branch, $title, $body)
+    {
+        return $this->githubHandler->createPullRequest($branch, $title, $body);
+    }
+
 }

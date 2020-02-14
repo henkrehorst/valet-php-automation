@@ -11,8 +11,6 @@ use App\Modules\Github\Client\GithubClient;
 class GithubHandler
 {
     const PACKAGES_FOLDER = "Formula";
-    const DEFAULT_BRANCH = "develop";
-
 
     private $gitHub;
     private $globalCredentials;
@@ -92,5 +90,17 @@ class GithubHandler
                 $sha,
                 $branch,
                 $committer);
+    }
+
+
+    public function createPullRequest($branch, $title, $body)
+    {
+        return $this->gitHub->client()->api('pull_request')->create($this->globalCredentials->getUsername(),
+            $this->globalCredentials->getRepo(),[
+                'base'  => $this->globalCredentials->getBranch(),
+                'head'  => $branch,
+                'title' => $title,
+                'body'  => $body
+            ]);
     }
 }
