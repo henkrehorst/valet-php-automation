@@ -82,6 +82,7 @@ class BuildService
                 $update->getReleaseVersion(),
                 $update->getPackageHash()
             );
+            $formulaContent = $this->formulaService->updateRevisionVersion($formulaContent, $update);
 
             //update formula content on github
             $this->githubService->updateFormulaFile($update->getPhpVersion()->getMinorVersion(),

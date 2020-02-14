@@ -12,6 +12,7 @@ class Config
     const OS_INDEX = "os";
     const INCLUDE_INDEX = "include";
     const SCRIPT_INDEX = "script";
+    const MERGE_INDEX = "merge_mode";
 
     private $os = [];
     private $osxImage = [];
@@ -40,6 +41,11 @@ class Config
                 "update" => true
             ]
         ];
+    }
+
+    private function getMergeMode()
+    {
+        return 'replace';
     }
 
     /**
@@ -77,7 +83,7 @@ class Config
     {
         $stages = [];
 
-        foreach ($this->stages as $stage){
+        foreach ($this->stages as $stage) {
             $stages[] = $stage->toArray();
         }
 
@@ -98,6 +104,7 @@ class Config
     public function getArray()
     {
         return [
+            self::MERGE_INDEX => $this->getMergeMode(),
             self::OS_INDEX => $this->getOs(),
             self::IMAGE_INDEX => $this->getOsxImage(),
             self::SCRIPT_INDEX => $this->disableTestStage(),
