@@ -11,6 +11,7 @@ class Credentials
     const API_TOKEN_INDEX = "BINTRAY_API_TOKEN";
     const USERNAME_INDEX = "BINTRAY_USERNAME";
     const URL_INDEX = "BINTRAY_URL";
+    const PACKAGE_URL_INDEX = "BINTRAY_PACKAGE_URL";
 
     public function getAutomationEndpoint()
     {
@@ -35,5 +36,10 @@ class Credentials
     public function getUrl()
     {
         return getenv(self::URL_INDEX);
+    }
+
+    public function getPackageUrl()
+    {
+        return getenv(self::PACKAGE_URL_INDEX);
     }
 }
