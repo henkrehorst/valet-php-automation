@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\PlatformUpdate;
 use App\Entity\Update;
+use App\Modules\AzureDevOps\Service\AzureDevOpsService;
 use App\Modules\Formula\Service\FormulaService;
 use App\Modules\Github\Service\GithubService;
 use App\Modules\Travis\Service\TravisService;
@@ -27,15 +28,17 @@ class BuildService
     private $entityManager;
     private $travisService;
     private $workFlows;
+    private $azureDevOpsService;
 
     public function __construct(GithubService $githubService, FormulaService $formulaService,
                                 PlatformRepository $platformRepository, EntityManagerInterface $entityManager,
-                                TravisService $travisService, Registry $workFlows)
+                                TravisService $travisService, Registry $workFlows, AzureDevOpsService $azureDevOpsService)
     {
         $this->githubService = $githubService;
         $this->formulaService = $formulaService;
         $this->platformRepository = $platformRepository;
         $this->entityManager = $entityManager;
+        $this->azureDevOpsService = $azureDevOpsService;
         $this->travisService = $travisService;
         $this->workFlows = $workFlows;
     }
@@ -142,6 +145,7 @@ class BuildService
 
         //apply jobs for platform updates to ci/cd's
         $this->travisService->triggerBuilds($buildsForTravis, $update, "valet php update {$update->getReleaseVersion()}");
+        $this->azureDevOpsService->triggerBuilds($buildsForAzurePipelines, $update, "valet php update {$update->getReleaseVersion()}");
 
     }
 

@@ -72,6 +72,13 @@ class SetupService
 
         //check if platform model no data exists
         if (empty($this->platformRepository->findAll())) {
+            //setup catalina platform
+            $plaform = new Platform();
+            $plaform->setName('catalina');
+            $plaform->setImageName('xcode10');
+            $plaform->setCiCd("azurePipelines");
+            $this->entityManager->persist($plaform);
+
             //setup mojave platform
             $plaform = new Platform();
             $plaform->setName('mojave');
