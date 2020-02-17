@@ -9,17 +9,20 @@ namespace App\Service;
 
 use App\Modules\PhpNet\Service\PhpNetService;
 use App\Repository\PhpVersionRepository;
+use App\Repository\UpdateRepository;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UpdateCheckService
 {
     private $phpNetService;
     private $phpVersionRepository;
+    private $updateRepository;
 
-    public function __construct(PhpNetService $phpNetService, PhpVersionRepository $phpVersionRepository)
+    public function __construct(PhpNetService $phpNetService, PhpVersionRepository $phpVersionRepository, UpdateRepository $updateRepository)
     {
         $this->phpNetService = $phpNetService;
         $this->phpVersionRepository = $phpVersionRepository;
+        $this->updateRepository = $updateRepository;
     }
 
     public function checkForUpdates(SymfonyStyle $io = null)
@@ -38,14 +41,19 @@ class UpdateCheckService
             if ($newReleaseVersion === $phpVersion->getCurrentReleaseVersion()) {
                 if ($io) $io->success("PHP " . $phpVersion->getMinorVersion() . " already up to date");
             } else {
-                $updateArray["alreadyUpToDate"] = false;
+                // check update is already created
+                if ($this->updateRepository->checkVersionUpdateExist($newReleaseVersion) === 0) {
+                    $updateArray["alreadyUpToDate"] = false;
 
-                //push version update to update array
-                $updateArray["updates"][$phpVersion->getMinorVersion()]["releaseVersion"] = $newReleaseVersion;
-                $updateArray["updates"][$phpVersion->getMinorVersion()]["packageHash"] = $this->phpNetService->getPackageHash($newReleaseVersion);
-                $updateArray["updates"][$phpVersion->getMinorVersion()]["phpVersion"] = $phpVersion;
+                    //push version update to update array
+                    $updateArray["updates"][$phpVersion->getMinorVersion()]["releaseVersion"] = $newReleaseVersion;
+                    $updateArray["updates"][$phpVersion->getMinorVersion()]["packageHash"] = $this->phpNetService->getPackageHash($newReleaseVersion);
+                    $updateArray["updates"][$phpVersion->getMinorVersion()]["phpVersion"] = $phpVersion;
 
-                if ($io) $io->warning("PHP " . $phpVersion->getMinorVersion() . " has a new release version");
+                    if ($io) $io->warning("PHP " . $phpVersion->getMinorVersion() . " has a new release version");
+                }else{
+                    if ($io) $io->note("PHP " . $phpVersion->getMinorVersion() . " has a new release version, update already created!");
+                }
             }
         }
 

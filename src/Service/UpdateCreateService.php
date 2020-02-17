@@ -8,19 +8,22 @@ namespace App\Service;
  */
 
 use App\Entity\Update;
+use App\Repository\UpdateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UpdateCreateService
 {
     private $entityManager;
+    private $updateRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UpdateRepository $updateRepository)
     {
         $this->entityManager = $entityManager;
+        $this->updateRepository = $updateRepository;
     }
 
-    public function createUpdates(array $updateInformation, SymfonyStyle $io = null)
+    public function createUpdates(array $updateInformation, SymfonyStyle $io = null, $rebuild = false)
     {
         $updates = [];
 
@@ -28,7 +31,13 @@ class UpdateCreateService
             $update = new Update();
             $update->setReleaseVersion($updateInfo["releaseVersion"]);
             $update->setPackageHash($updateInfo["packageHash"]);
-            $update->setBranch(getenv('UPDATE_PREFIX_BRANCH') . "/" . $updateInfo['releaseVersion'] . "@" . time());
+            if ($rebuild) {
+                $update->setBranch(getenv('REBUILD_PREFIX_BRANCH') . "/" . $updateInfo['releaseVersion'] . "@" . time());
+                $update->setType("rebuild");
+                $update->setRevisionVersion($this->generateRevisionVersion($updateInfo['releaseVersion']));
+            } else {
+                $update->setBranch(getenv('UPDATE_PREFIX_BRANCH') . "/" . $updateInfo['releaseVersion'] . "@" . time());
+            }
             $update->setPhpVersion($updateInfo["phpVersion"]);
             $update->setCreatedAt(new \DateTime("now"));
 
@@ -40,5 +49,20 @@ class UpdateCreateService
         $this->entityManager->flush();
 
         return $updates;
+    }
+
+    /**
+     * @param $releaseVersion
+     * @return int
+     */
+    public function generateRevisionVersion($releaseVersion)
+    {
+        // get latest revision version
+        $revisionVersion = $this->updateRepository->getLatestRevisionVersion($releaseVersion);
+        if ($revisionVersion !== null) {
+            return $revisionVersion['revisionVersion']++;
+        }
+
+        return 0;
     }
 }

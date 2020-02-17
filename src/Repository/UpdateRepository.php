@@ -47,4 +47,25 @@ class UpdateRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function checkVersionUpdateExist(string $releaseVersion)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->andWhere('u.releaseVersion = :version')
+            ->setParameter('version', $releaseVersion)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function getLatestRevisionVersion(string $releaseVersion)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.revisionVersion')
+            ->setMaxResults(1)
+            ->andWhere('u.releaseVersion = :version')
+            ->setParameter('version', $releaseVersion)
+            ->orderBy('u.revisionVersion', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
