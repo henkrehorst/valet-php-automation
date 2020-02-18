@@ -76,8 +76,8 @@ class BuildService
         //create a new update branch on github
         $this->githubService->createNewBranch($update->getBranch());
 
-        //if it is a release update, update the php release version and package hash
-        if ($update->getType() == "releaseUpdate") {
+        //if it is a release or rebuild update, update always the php release version and package hash
+        if ($update->getType() == "releaseUpdate" || $update->getType() == "rebuild") {
             //update php source in formula content
             $formulaContent = $this->formulaService->updatePhpSource(
                 $this->githubService->getFormulaContent($update->getPhpVersion()->getMinorVersion(),
@@ -90,7 +90,7 @@ class BuildService
             //update formula content on github
             $this->githubService->updateFormulaFile($update->getPhpVersion()->getMinorVersion(),
                 $formulaContent,
-                "Update source to {$update->getReleaseVersion()} and package hash",
+                "Update source to {$update->getReleaseVersion()}, package hash and revision!",
                 $update->getBranch()
             );
         }

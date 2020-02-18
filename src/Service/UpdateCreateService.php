@@ -31,13 +31,15 @@ class UpdateCreateService
             $update = new Update();
             $update->setReleaseVersion($updateInfo["releaseVersion"]);
             $update->setPackageHash($updateInfo["packageHash"]);
+
             if ($rebuild) {
                 $update->setBranch(getenv('REBUILD_PREFIX_BRANCH') . "/" . $updateInfo['releaseVersion'] . "@" . time());
                 $update->setType("rebuild");
-                $update->setRevisionVersion($this->generateRevisionVersion($updateInfo['releaseVersion']));
+                $update->setRevisionVersion($this->generateRevisionVersion($update->getReleaseVersion()));
             } else {
                 $update->setBranch(getenv('UPDATE_PREFIX_BRANCH') . "/" . $updateInfo['releaseVersion'] . "@" . time());
             }
+
             $update->setPhpVersion($updateInfo["phpVersion"]);
             $update->setCreatedAt(new \DateTime("now"));
 
@@ -60,7 +62,8 @@ class UpdateCreateService
         // get latest revision version
         $revisionVersion = $this->updateRepository->getLatestRevisionVersion($releaseVersion);
         if ($revisionVersion !== null) {
-            return $revisionVersion['revisionVersion']++;
+            // increment revision version by 1
+            return $revisionVersion['revisionVersion'] + 1;
         }
 
         return 0;

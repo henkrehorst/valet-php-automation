@@ -33,9 +33,9 @@ class AzureDevOpsService
 
         $buildRequest->setVariables([
             "PHPV" => $update->getPhpVersion()->getMinorVersion(),
-            "PACKAGE_REPOSITORY" => $this->bintrayCredentials->getPackageRepository(),
-            "BUILD_VERSION" => "{$update->getReleaseVersion()}_{$update->getRevisionVersion()}",
-            "AUTOMATION_ENDPOINT" => $this->bintrayCredentials->getAutomationEndpoint(),
+            "PACKAGEREPOSITORY" => $this->bintrayCredentials->getPackageRepository(),
+            "BUILDVERSION" => "{$update->getReleaseVersion()}_{$update->getRevisionVersion()}",
+            "AUTOMATIONENDPOINT" => $this->bintrayCredentials->getAutomationEndpoint(),
             "apiCall" => true
         ]);
 

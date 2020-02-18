@@ -38,7 +38,6 @@ class RebuildService
 
         //check php version exists for rebuild
         $phpVersion = $this->phpVersionRepository->getPhpVersionByVersion($version);
-        $this->updateCreateService->generateRevisionVersion($phpVersion->getMinorVersion());
 
         if ($phpVersion !== null) {
             if ($io) $io->success("Found PHP version in brewtap, start rebuild process!");
