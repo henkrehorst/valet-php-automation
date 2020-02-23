@@ -42,7 +42,7 @@ class UpdateCheckService
                 if ($io) $io->success("PHP " . $phpVersion->getMinorVersion() . " already up to date");
             } else {
                 // check update is already created
-                if ($this->updateRepository->checkVersionUpdateExist($newReleaseVersion) === 0) {
+                if ($this->updateRepository->checkVersionUpdateExist($newReleaseVersion) == 0) {
                     $updateArray["alreadyUpToDate"] = false;
 
                     //push version update to update array
