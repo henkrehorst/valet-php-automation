@@ -9,6 +9,7 @@ use App\Entity\Update;
 use App\Modules\Bintray\Service\BintrayService;
 use App\Modules\Formula\Service\FormulaService;
 use App\Modules\Github\Service\GithubService;
+use App\Modules\Slack\Service\SlackService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\Registry;
 
@@ -19,6 +20,7 @@ class UpdateFinishService
     private $formulaService;
     private $githubService;
     private $bintrayService;
+    private $slackService;
 
     /**
      * UpdateFinishService constructor.
@@ -29,13 +31,15 @@ class UpdateFinishService
                                 Registry $workflows,
                                 FormulaService $formulaService,
                                 GithubService $githubService,
-                                BintrayService $bintrayService)
+                                BintrayService $bintrayService,
+                                SlackService $slackService)
     {
         $this->entityManager = $entityManager;
         $this->workFlows = $workflows;
         $this->formulaService = $formulaService;
         $this->githubService = $githubService;
         $this->bintrayService = $bintrayService;
+        $this->slackService = $slackService;
     }
 
     /**
@@ -72,7 +76,7 @@ class UpdateFinishService
         if ($this->checkPlatformUpdates($parentUpdate)) {
             //update status of parent update
             $workflow = $this->workFlows->get($parentUpdate, 'update_process');
-            $workflow->apply($parentUpdate,'to_update_bottle_hash');
+            $workflow->apply($parentUpdate, 'to_update_bottle_hash');
             $this->entityManager->persist($parentUpdate);
             $this->entityManager->flush();
 
@@ -89,13 +93,21 @@ class UpdateFinishService
                 "{$parentUpdate->getReleaseVersion()}_{$parentUpdate->getRevisionVersion()}");
 
             //create pull request
-            $this->githubService->createPullRequest($parentUpdate->getBranch(),
+            $pullRequest = $this->githubService->createPullRequest($parentUpdate->getBranch(),
                 "valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()} update {$parentUpdate->getReleaseVersion()}",
-                "Release update for valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()}");
+                "{$parentUpdate->getType()} for valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()}");
+
+            if (getenv("APP_ENV" != "dev")) {
+                //send message to slack
+                $this->slackService->sendMessage(
+                    "[Pull Request] valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()} update {$parentUpdate->getReleaseVersion()}\n" .
+                    "{$parentUpdate->getType()} for valet-php@{$parentUpdate->getPhpVersion()->getMinorVersion()}" .
+                    "{$pullRequest->getUrl()}");
+            }
 
             //update status parent update
             $workflow = $this->workFlows->get($parentUpdate, 'update_process');
-            $workflow->apply($parentUpdate,'to_pull_request');
+            $workflow->apply($parentUpdate, 'to_pull_request');
             $this->entityManager->persist($parentUpdate);
             $this->entityManager->flush();
 

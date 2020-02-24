@@ -7,6 +7,7 @@ namespace App\Modules\Github\Handler;
 use App\Client\GlobalCredentials;
 use App\Modules\Github\Interpreter\ContentInterpreter;
 use App\Modules\Github\Client\GithubClient;
+use App\Modules\Github\Interpreter\PullRequestInterpreter;
 
 class GithubHandler
 {
@@ -95,12 +96,12 @@ class GithubHandler
 
     public function createPullRequest($branch, $title, $body)
     {
-        return $this->gitHub->client()->api('pull_request')->create($this->globalCredentials->getUsername(),
+        return new PullRequestInterpreter($this->gitHub->client()->api('pull_request')->create($this->globalCredentials->getUsername(),
             $this->globalCredentials->getRepo(),[
                 'base'  => $this->globalCredentials->getBranch(),
                 'head'  => $branch,
                 'title' => $title,
                 'body'  => $body
-            ]);
+            ]));
     }
 }

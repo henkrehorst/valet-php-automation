@@ -6,6 +6,10 @@
     "ext-ctype": "*",
     "ext-curl": "*",
     "ext-iconv": "*",
+    "ext-json": "*",
+    "knplabs/github-api": "~2.11.0",
+    "maknz/slack": "^1.7",
+    "php-http/guzzle6-adapter": "^1.1",
     "ramsey/uuid-doctrine": "^1.5",
     "sensio/framework-extra-bundle": "^5.1",
     "symfony/asset": "4.3.*",
@@ -28,10 +32,7 @@
     "symfony/validator": "4.3.*",
     "symfony/web-link": "4.3.*",
     "symfony/workflow": "4.3.*",
-    "symfony/yaml": "4.3.*",
-    "knplabs/github-api": "~2.11.0",
-    "php-http/guzzle6-adapter": "^1.1",
-    "ext-json": "*"
+    "symfony/yaml": "4.3.*"
   },
   "require-dev": {
     "symfony/debug-pack": "*",
