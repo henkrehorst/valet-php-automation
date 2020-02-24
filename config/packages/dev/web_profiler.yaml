@@ -1,5 +1,5 @@
 web_profiler:
-    toolbar: '%env(bool:DEBUG_BAR)%'
+    toolbar: false
     intercept_redirects: false
 
 framework:
