@@ -15,7 +15,7 @@ class Stage
     private $env = [];
     private $image = "";
     private $script = [
-        "travis_wait 30 sleep 1800 &",
+        "travis_wait 45 sleep 1800 &",
         "bash scripts/automationbuild"];
 
     public function __construct($name, $env, $image)
